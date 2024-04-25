@@ -7,7 +7,7 @@
 
 import React from 'react';
 import {SafeAreaView, ScrollView, StatusBar, Text, View} from 'react-native';
-import TimeZoneSection from './components/TimeZoneSection';
+import TimeZoneSection from '../components/TimeZoneSection';
 
 function SetAlarm(): React.JSX.Element {
   const backgroundStyle = {
@@ -28,7 +28,13 @@ function SetAlarm(): React.JSX.Element {
           height: '100%',
         }}>
         <View>
-          <Text style={{color: 'yellow'}}>HEYYYYY</Text>
+          <Text
+            style={{
+              fontSize: 32,
+              color: 'yellow',
+            }}>
+            Set new alarm
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

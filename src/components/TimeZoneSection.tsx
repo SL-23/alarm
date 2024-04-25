@@ -1,12 +1,14 @@
+import {NavigationAction, NavigationProp} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 interface SectionProps {
   title: string;
   timeZone: string;
+  navigation: any;
 }
 
-const TimeZoneSection = ({title, timeZone}: SectionProps) => {
+const TimeZoneSection = ({title, timeZone, navigation}: SectionProps) => {
   const dateInformation = new Date();
   const [locationTime, setLocationTime] = useState(dateInformation);
 
@@ -41,7 +43,9 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        onPress={() => {}}>
+        onPress={() => {
+          navigation.navigate('SetAlarm');
+        }}>
         <Image
           style={{
             width: 36,
