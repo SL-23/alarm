@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
-  Button,
+  Image,
   Modal,
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 interface SectionProps {
   title: string;
@@ -17,14 +17,14 @@ interface SectionProps {
 
 const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const dateInformation = new Date();
-  const [localTime, setLocationTime] = useState(dateInformation);
+  const [locationTime, setLocationTime] = useState(dateInformation);
   const [modalVisible, setModalVisible] = useState(false);
 
   const options = {
     timeZone: timeZone,
     hour: '2-digit',
     minute: '2-digit',
-    // timeZoneName: 'longGeneric',
+    timeZoneName: 'longOffset',
   } as Intl.DateTimeFormatOptions;
   const formatter = new Intl.DateTimeFormat([], options);
 
@@ -34,15 +34,33 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
     });
     return () => clearInterval(timer);
   }, []);
+
+  const formattedTimeArr = formatter.format(locationTime).split(' ');
+  const timeZoneName = formattedTimeArr.slice(1).join(' ');
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.titleContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
-        <Button onPress={() => setModalVisible(true)} title="Add alarm" />
+        <Text style={styles.sectionSubtitle}>{timeZoneName}</Text>
       </View>
-      <Text style={styles.sectionDescription}>
-        {formatter.format(localTime)}
-      </Text>
+      <Text style={styles.sectionDescription}>{formattedTimeArr[0]}</Text>
+      <TouchableOpacity
+        style={{
+          width: 36,
+          height: 36,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        onPress={() => setModalVisible(true)}>
+        <Image
+          style={{
+            width: 36,
+            height: 36,
+            resizeMode: 'cover',
+          }}
+          source={require('../resources/icons/plug.png')}
+        />
+      </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -73,22 +91,27 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   titleContainer: {
+    marginRight: 48,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: Colors.red,
-    alignItems: 'center',
-    // justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: '600',
-    color: Colors.white,
+    color: 'white',
+  },
+  sectionSubtitle: {
+    fontSize: 12,
+    color: 'white',
   },
   sectionDescription: {
-    color: Colors.white,
+    color: 'white',
     fontSize: 48,
     fontWeight: '400',
   },
