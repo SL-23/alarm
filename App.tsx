@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -16,6 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {getTimeZone} from 'react-native-localize';
 
 import {
   Colors,
@@ -57,6 +58,22 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const dateInformation = new Date();
+  const [localTime, setLocationTime] = useState(dateInformation);
+
+  const options = {
+    timeZone: 'Australia/Sydney',
+    hour: '2-digit',
+    minute: '2-digit',
+  } as Intl.DateTimeFormatOptions;
+  const formatter = new Intl.DateTimeFormat([], options);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLocationTime(new Date()), 600000;
+    });
+    return () => clearInterval(timer);
+  }, []);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -71,25 +88,17 @@ function App(): React.JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+          <Section title="Local time">
+            {localTime.toLocaleTimeString('en-AU', {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <Section title="Syd time">{formatter.format(localTime)}</Section>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -102,12 +111,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: '600',
   },
   sectionDescription: {
     marginTop: 8,
-    fontSize: 18,
+    fontSize: 48,
     fontWeight: '400',
   },
   highlight: {
