@@ -1,14 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  Image,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 interface SectionProps {
   title: string;
@@ -18,7 +9,6 @@ interface SectionProps {
 const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const dateInformation = new Date();
   const [locationTime, setLocationTime] = useState(dateInformation);
-  const [modalVisible, setModalVisible] = useState(false);
 
   const options = {
     timeZone: timeZone,
@@ -51,36 +41,16 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        onPress={() => setModalVisible(true)}>
+        onPress={() => {}}>
         <Image
           style={{
             width: 36,
             height: 36,
             resizeMode: 'cover',
           }}
-          source={require('../resources/icons/plug.png')}
+          source={require('../../resources/icons/plug.png')}
         />
       </TouchableOpacity>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };

@@ -1,15 +1,15 @@
 /**
- * Sample React Native App
+ * Sample React Native SetAlarm
  * https://github.com/facebook/react-native
  *
  * @format
  */
 
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, Text, View} from 'react-native';
 import TimeZoneSection from './components/TimeZoneSection';
 
-function App(): React.JSX.Element {
+function SetAlarm(): React.JSX.Element {
   const backgroundStyle = {
     backgroundColor: 'darker',
   };
@@ -27,16 +27,12 @@ function App(): React.JSX.Element {
           backgroundColor: 'black',
           height: '100%',
         }}>
-        <View
-          style={{
-            backgroundColor: 'black',
-          }}>
-          <TimeZoneSection title="Local" timeZone="Australia/Adelaide" />
-          <TimeZoneSection title="SDY" timeZone="Australia/Sydney" />
+        <View>
+          <Text style={{color: 'yellow'}}>HEYYYYY</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-export default App;
+export default SetAlarm;
