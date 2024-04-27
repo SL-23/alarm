@@ -1,5 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {BottomSheet, BottomSheetRef} from 'react-native-sheet';
 import AddAlarmSheetContent from './AddAlarmSheetContent';
 
@@ -56,6 +64,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           source={require('../../resources/icons/plug.png')}
         />
       </TouchableOpacity>
+
       <View>
         <BottomSheet colorScheme="dark" ref={bottomSheetRef} height={580}>
           <AddAlarmSheetContent

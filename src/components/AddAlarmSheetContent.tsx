@@ -1,4 +1,14 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  ScrollView,
+  ScrollViewComponent,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import TimeSpectrum from './TimeSpectrum';
+import InputFields from './InputFields';
 
 interface AddAlarmSheetProps {
   timeZone: string;
@@ -12,13 +22,20 @@ const AddAlarmSheetContent = ({
   onSave,
 }: AddAlarmSheetProps) => {
   return (
-    <View style={styles.headerContainer}>
-      <Button color="orange" title="Cancel" onPress={onClose} />
-      <Text style={{color: 'white', fontWeight: '600'}}>
-        Add alarm at {timeZone}
-      </Text>
-      <Button color="orange" title="Save" onPress={onSave} />
-    </View>
+    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.headerContainer}>
+        <Button color="orange" title="Cancel" onPress={onClose} />
+        <Text style={{color: 'white', fontWeight: '600'}}>
+          Add alarm at {timeZone}
+        </Text>
+        <Button color="orange" title="Save" onPress={onSave} />
+      </View>
+      <InputFields />
+      <View style={{display: 'flex', flexDirection: 'row'}}>
+        <TimeSpectrum />
+        <TimeSpectrum />
+      </View>
+    </ScrollView>
   );
 };
 
