@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import TimeZoneSection from '../components/TimeZoneSection';
 
-const Home = ({navigation}: {navigation: any}) => {
+const Home = () => {
   const backgroundStyle = {
     backgroundColor: 'darker',
   };
@@ -23,16 +23,8 @@ const Home = ({navigation}: {navigation: any}) => {
           style={{
             backgroundColor: 'black',
           }}>
-          <TimeZoneSection
-            navigation={navigation}
-            title="Local"
-            timeZone="Australia/Adelaide"
-          />
-          <TimeZoneSection
-            navigation={navigation}
-            title="SDY"
-            timeZone="Australia/Sydney"
-          />
+          <TimeZoneSection title="Local" timeZone="Australia/Adelaide" />
+          <TimeZoneSection title="SDY" timeZone="Australia/Sydney" />
         </View>
       </ScrollView>
     </SafeAreaView>

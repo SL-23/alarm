@@ -1,14 +1,14 @@
-import {NavigationAction, NavigationProp} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {BottomSheet, BottomSheetRef} from 'react-native-sheet';
+import AddAlarmSheetContent from './AddAlarmSheetContent';
 
 interface SectionProps {
   title: string;
   timeZone: string;
-  navigation: any;
 }
 
-const TimeZoneSection = ({title, timeZone, navigation}: SectionProps) => {
+const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const dateInformation = new Date();
   const [locationTime, setLocationTime] = useState(dateInformation);
 
@@ -29,6 +29,7 @@ const TimeZoneSection = ({title, timeZone, navigation}: SectionProps) => {
 
   const formattedTimeArr = formatter.format(locationTime).split(' ');
   const timeZoneName = formattedTimeArr.slice(1).join(' ');
+  const bottomSheetRef = useRef<BottomSheetRef>(null);
   return (
     <View style={styles.sectionContainer}>
       <View style={styles.titleContainer}>
@@ -44,7 +45,7 @@ const TimeZoneSection = ({title, timeZone, navigation}: SectionProps) => {
           alignItems: 'center',
         }}
         onPress={() => {
-          navigation.navigate('SetAlarm');
+          bottomSheetRef.current?.show();
         }}>
         <Image
           style={{
@@ -55,6 +56,14 @@ const TimeZoneSection = ({title, timeZone, navigation}: SectionProps) => {
           source={require('../../resources/icons/plug.png')}
         />
       </TouchableOpacity>
+      <View>
+        <BottomSheet colorScheme="dark" ref={bottomSheetRef} height={580}>
+          <AddAlarmSheetContent
+            timeZone={timeZone}
+            onClose={() => bottomSheetRef.current?.hide()}
+          />
+        </BottomSheet>
+      </View>
     </View>
   );
 };
@@ -88,50 +97,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 48,
     fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });
 
