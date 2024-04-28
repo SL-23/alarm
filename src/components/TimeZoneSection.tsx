@@ -70,6 +70,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           <AddAlarmSheetContent
             timeZone={timeZone}
             onClose={() => bottomSheetRef.current?.hide()}
+            onSave={() => bottomSheetRef.current?.hide()}
           />
         </BottomSheet>
       </View>

@@ -19,6 +19,7 @@ const TimeSpectrum = () => {
       {Array.from({length: 12}).map((_, index) => {
         return (
           <View
+            key={index}
             style={{
               backgroundColor:
                 index === 0
@@ -39,6 +40,7 @@ const TimeSpectrum = () => {
 
       {Array.from({length: 12}).map((_, index) => (
         <View
+          key={index + 12}
           style={{
             backgroundColor:
               index === 0
