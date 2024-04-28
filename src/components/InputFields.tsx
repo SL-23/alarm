@@ -11,6 +11,7 @@ import {
 import TimeSpectrum from './TimeSpectrum';
 import {useState} from 'react';
 import * as Notifications from 'expo-notifications';
+import SheetHeader from './SheetHeader';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -69,13 +70,11 @@ const InputFields = ({timeZone, onClose}: InputFieldsProps) => {
   };
   return (
     <View style={{display: 'flex', alignItems: 'center'}}>
-      <View style={styles.headerContainer}>
-        <Button color="orange" title="Cancel" onPress={onClose} />
-        <Text style={{color: 'white', fontWeight: '600'}}>
-          Add alarm at {timeZone}
-        </Text>
-        <Button color="orange" title="Save" onPress={onSave} />
-      </View>
+      <SheetHeader
+        onClose={onClose}
+        onSave={onSave}
+        heading={`Add alarm at ${timeZone}`}
+      />
       <View style={styles.container}>
         <TextInput
           style={{color: 'white', fontSize: 24}}

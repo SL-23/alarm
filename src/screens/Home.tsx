@@ -1,6 +1,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import TimeZoneSection from '../components/TimeZoneSection';
+import AddTimeZone from '../components/AddTimeZone';
 
 const Home = () => {
   const backgroundStyle = {
@@ -10,7 +11,7 @@ const Home = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={'light-content'}
+        barStyle={'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <ScrollView
@@ -19,6 +20,7 @@ const Home = () => {
           backgroundColor: 'black',
           height: '100%',
         }}>
+        <AddTimeZone />
         <View
           style={{
             backgroundColor: 'black',
