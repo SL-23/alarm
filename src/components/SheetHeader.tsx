@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   container: {
     color: 'white',
     display: 'flex',
-    alignItems: 'center',
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 16,

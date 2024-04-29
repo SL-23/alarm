@@ -1,35 +1,33 @@
-import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import React, {useContext} from 'react';
+import {ScrollView, View} from 'react-native';
 import TimeZoneSection from '../components/TimeZoneSection';
 import AddTimeZone from '../components/AddTimeZone';
+import MyTimeZonesContext from '../context/MyTimeZonesContext';
 
 const Home = () => {
-  const backgroundStyle = {
-    backgroundColor: 'darker',
-  };
-
+  const {myTimeZones} = useContext(MyTimeZonesContext);
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={{
+        backgroundColor: 'black',
+        height: '100%',
+      }}>
+      <AddTimeZone />
+      <View
         style={{
           backgroundColor: 'black',
-          height: '100%',
         }}>
-        <AddTimeZone />
-        <View
-          style={{
-            backgroundColor: 'black',
-          }}>
-          <TimeZoneSection title="Local" timeZone="Australia/Adelaide" />
-          <TimeZoneSection title="SDY" timeZone="Australia/Sydney" />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        <TimeZoneSection title="Local" timeZone="Australia/Adelaide" />
+        {myTimeZones.map(zone => (
+          <TimeZoneSection
+            key={zone}
+            title={zone.split('/')[1]}
+            timeZone={zone}
+          />
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 

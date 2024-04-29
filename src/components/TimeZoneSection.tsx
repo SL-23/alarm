@@ -1,8 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
-  FlatList,
+  Button,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +9,8 @@ import {
 } from 'react-native';
 import {BottomSheet, BottomSheetRef} from 'react-native-sheet';
 import AddAlarmSheetContent from './AddAlarmSheetContent';
+import Stack from './core/Stack';
+import MyTimeZonesContext from '../context/MyTimeZonesContext';
 
 interface SectionProps {
   title: string;
@@ -38,12 +39,30 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const formattedTimeArr = formatter.format(locationTime).split(' ');
   const timeZoneName = formattedTimeArr.slice(1).join(' ');
   const bottomSheetRef = useRef<BottomSheetRef>(null);
+  const [touchStartPos, setTouchStartPos] = useState(0);
+  const [showDelete, setShowDelete] = useState(false);
+  const {removeMyTimeZone} = useContext(MyTimeZonesContext);
   return (
-    <View style={styles.sectionContainer}>
-      <View style={styles.titleContainer}>
+    <View
+      onMoveShouldSetResponder={() => {
+        return true;
+      }}
+      onTouchStart={e => {
+        setTouchStartPos(e.nativeEvent.pageX);
+      }}
+      onTouchEnd={e => {
+        const touchEndPos = e.nativeEvent.pageX;
+        if (touchEndPos < touchStartPos) {
+          setShowDelete(true);
+        } else {
+          setShowDelete(false);
+        }
+      }}
+      style={styles.sectionContainer}>
+      <Stack style={styles.titleContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
         <Text style={styles.sectionSubtitle}>{timeZoneName}</Text>
-      </View>
+      </Stack>
       <Text style={styles.sectionDescription}>{formattedTimeArr[0]}</Text>
       <TouchableOpacity
         style={{
@@ -74,23 +93,22 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           />
         </BottomSheet>
       </View>
+      {showDelete && (
+        <Button title="DEL" onPress={() => removeMyTimeZone(timeZone)} />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginVertical: 32,
-    marginHorizontal: 16,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    marginVertical: 32,
+    marginHorizontal: 8,
     justifyContent: 'space-between',
   },
   titleContainer: {
-    marginRight: 48,
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
   },

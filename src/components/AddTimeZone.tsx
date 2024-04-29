@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useContext, useRef, useState} from 'react';
 import {
   Button,
   FlatList,
@@ -11,12 +11,14 @@ import {
 } from 'react-native';
 import {availableTimeZones} from './availableTimeZones';
 import SheetHeader from './SheetHeader';
+import MyTimeZonesContext from '../context/MyTimeZonesContext';
 
 const AddTimeZone = () => {
   const [inputText, setInputText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [timeZoneOptions, setTimezoneOptions] = useState(availableTimeZones);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
+  const {addMyTimeZone} = useContext(MyTimeZonesContext);
   return (
     <View>
       <TouchableOpacity
@@ -51,7 +53,10 @@ const AddTimeZone = () => {
             }}>
             <SheetHeader
               onClose={() => setModalVisible(false)}
-              onSave={() => setModalVisible(false)}
+              onSave={() => {
+                setModalVisible(false);
+                addMyTimeZone(selectedTimeZone);
+              }}
               heading="Add a timezone"
             />
             <Text>Selected {selectedTimeZone}</Text>
