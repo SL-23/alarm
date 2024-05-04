@@ -12,18 +12,13 @@ import InputFields from './InputFields';
 
 interface AddAlarmSheetProps {
   timeZone: string;
-  onClose: () => void;
-  onSave: () => void;
+  onSheetClose: () => void;
 }
 
-const AddAlarmSheetContent = ({
-  timeZone,
-  onClose,
-  onSave,
-}: AddAlarmSheetProps) => {
+const AddAlarmSheetContent = ({timeZone, onSheetClose}: AddAlarmSheetProps) => {
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <InputFields timeZone={timeZone} onClose={onClose} onSave={onSave} />
+      <InputFields timeZone={timeZone} onSheetClose={onSheetClose} />
       {/* <View style={{display: 'flex', flexDirection: 'row'}}>
         <TimeSpectrum />
         <TimeSpectrum />

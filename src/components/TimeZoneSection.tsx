@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {BottomSheet, BottomSheetRef} from 'react-native-sheet';
 import AddAlarmSheetContent from './AddAlarmSheetContent';
 import Stack from './core/Stack';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
+import Sheet from './core/Sheet';
 
 interface SectionProps {
   title: string;
@@ -38,65 +38,71 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
 
   const formattedTimeArr = formatter.format(locationTime).split(' ');
   const timeZoneName = formattedTimeArr.slice(1).join(' ');
-  const bottomSheetRef = useRef<BottomSheetRef>(null);
   const [touchStartPos, setTouchStartPos] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const {removeMyTimeZone} = useContext(MyTimeZonesContext);
   return (
-    <View
-      onMoveShouldSetResponder={() => {
-        return true;
-      }}
-      onTouchStart={e => {
-        setTouchStartPos(e.nativeEvent.pageX);
-      }}
-      onTouchEnd={e => {
-        const touchEndPos = e.nativeEvent.pageX;
-        if (touchEndPos < touchStartPos) {
-          setShowDelete(true);
-        } else {
-          setShowDelete(false);
-        }
-      }}
-      style={styles.sectionContainer}>
-      <Stack style={styles.titleContainer}>
-        <Text style={styles.sectionTitle}>{title}</Text>
-        <Text style={styles.sectionSubtitle}>{timeZoneName}</Text>
-      </Stack>
-      <Text style={styles.sectionDescription}>{formattedTimeArr[0]}</Text>
-      <TouchableOpacity
-        style={{
-          width: 36,
-          height: 36,
-          justifyContent: 'center',
-          alignItems: 'center',
+    <>
+      <View
+        onMoveShouldSetResponder={() => {
+          return true;
         }}
-        onPress={() => {
-          bottomSheetRef.current?.show();
-        }}>
-        <Image
+        onTouchStart={e => {
+          setTouchStartPos(e.nativeEvent.pageX);
+        }}
+        onTouchEnd={e => {
+          const touchEndPos = e.nativeEvent.pageX;
+          if (touchEndPos < touchStartPos) {
+            setShowDelete(true);
+          } else {
+            setShowDelete(false);
+          }
+        }}
+        style={styles.sectionContainer}>
+        <Stack style={styles.titleContainer}>
+          <Text style={styles.sectionTitle}>{title}</Text>
+          <Text style={styles.sectionSubtitle}>{timeZoneName}</Text>
+        </Stack>
+        <Text style={styles.sectionDescription}>{formattedTimeArr[0]}</Text>
+        <TouchableOpacity
           style={{
             width: 36,
             height: 36,
-            resizeMode: 'cover',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          source={require('../../resources/icons/plug.png')}
-        />
-      </TouchableOpacity>
+          onPress={() => {
+            setIsSheetOpen(true);
+          }}>
+          <Image
+            style={{
+              width: 36,
+              height: 36,
+              resizeMode: 'cover',
+            }}
+            source={require('../../resources/icons/plug.png')}
+          />
+        </TouchableOpacity>
 
+        {showDelete && title !== 'Local' && (
+          <Button title="DEL" onPress={() => removeMyTimeZone(timeZone)} />
+        )}
+      </View>
       <View>
-        <BottomSheet colorScheme="dark" ref={bottomSheetRef} height={580}>
+        <Sheet
+          open={isSheetOpen}
+          heading={`Add alarm at ${timeZone}`}
+          height={600}
+          onClose={() => setIsSheetOpen(false)}
+          onSave={() => setIsSheetOpen(false)}>
           <AddAlarmSheetContent
             timeZone={timeZone}
-            onClose={() => bottomSheetRef.current?.hide()}
-            onSave={() => bottomSheetRef.current?.hide()}
+            onSheetClose={() => setIsSheetOpen(false)}
           />
-        </BottomSheet>
+        </Sheet>
       </View>
-      {showDelete && (
-        <Button title="DEL" onPress={() => removeMyTimeZone(timeZone)} />
-      )}
-    </View>
+    </>
   );
 };
 

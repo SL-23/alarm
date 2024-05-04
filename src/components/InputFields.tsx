@@ -11,7 +11,7 @@ import {
 import TimeSpectrum from './TimeSpectrum';
 import {useState} from 'react';
 import * as Notifications from 'expo-notifications';
-import SheetHeader from './SheetHeader';
+import SheetHeader from './core/SheetHeader';
 import Inline from './core/Inline';
 
 Notifications.setNotificationHandler({
@@ -24,11 +24,10 @@ Notifications.setNotificationHandler({
 
 interface InputFieldsProps {
   timeZone: string;
-  onClose: () => void;
-  onSave: () => void;
+  onSheetClose: () => void;
 }
 
-const InputFields = ({timeZone, onClose}: InputFieldsProps) => {
+const InputFields = ({timeZone, onSheetClose}: InputFieldsProps) => {
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [amOrPm, setAmOrPm] = useState('');
@@ -58,7 +57,7 @@ const InputFields = ({timeZone, onClose}: InputFieldsProps) => {
       setMinute('');
       console.log(identifier, 'succeed');
       setNotificationId(identifier);
-      onClose();
+      onSheetClose();
       // storeData(identifier);
     } else {
       console.log(notificationId);
@@ -71,11 +70,6 @@ const InputFields = ({timeZone, onClose}: InputFieldsProps) => {
   };
   return (
     <View style={{display: 'flex', alignItems: 'center'}}>
-      <SheetHeader
-        onClose={onClose}
-        onSave={onSave}
-        heading={`Add alarm at ${timeZone}`}
-      />
       <Inline style={styles.container}>
         <TextInput
           style={{color: 'white', fontSize: 24}}

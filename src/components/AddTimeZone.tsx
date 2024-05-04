@@ -1,8 +1,6 @@
-import {useContext, useRef, useState} from 'react';
+import {useContext, useState} from 'react';
 import {
   Button,
-  FlatList,
-  Modal,
   ScrollView,
   Text,
   TextInput,
@@ -10,12 +8,12 @@ import {
   View,
 } from 'react-native';
 import {availableTimeZones} from './availableTimeZones';
-import SheetHeader from './SheetHeader';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
+import Sheet from './core/Sheet';
 
 const AddTimeZone = () => {
   const [inputText, setInputText] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [timeZoneOptions, setTimezoneOptions] = useState(availableTimeZones);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
   const {addMyTimeZone} = useContext(MyTimeZonesContext);
@@ -27,7 +25,7 @@ const AddTimeZone = () => {
           alignItems: 'center',
         }}
         onPress={() => {
-          setModalVisible(true);
+          setSheetOpen(true);
         }}>
         <Text
           style={{
@@ -40,51 +38,52 @@ const AddTimeZone = () => {
         </Text>
       </TouchableOpacity>
       <View>
-        <Modal transparent={true} visible={modalVisible}>
-          <View
+        <Sheet
+          height={600}
+          open={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          onSave={() => {
+            setSheetOpen(false);
+            addMyTimeZone(selectedTimeZone);
+          }}
+          heading="Add a timezone">
+          <Text style={{color: 'white', margin: 16}}>
+            Selected {selectedTimeZone}
+          </Text>
+
+          <TextInput
             style={{
-              position: 'absolute',
-              bottom: 0,
-              width: '100%',
-              height: '80%',
-              backgroundColor: '#1f1f1f',
+              fontSize: 18,
+              color: 'white',
+              borderColor: 'orange',
+              borderWidth: 2,
               borderRadius: 16,
-              padding: 32,
-            }}>
-            <SheetHeader
-              onClose={() => setModalVisible(false)}
-              onSave={() => {
-                setModalVisible(false);
-                addMyTimeZone(selectedTimeZone);
-              }}
-              heading="Add a timezone"
-            />
-            <Text>Selected {selectedTimeZone}</Text>
-            <TextInput
-              style={{fontSize: 18, color: 'white'}}
-              placeholder="Search"
-              value={inputText}
-              onChangeText={text => {
-                setInputText(text);
-                setTimezoneOptions(
-                  availableTimeZones.filter(option =>
-                    option.toLowerCase().includes(text.toLowerCase()),
-                  ),
-                );
-              }}
-            />
-            <ScrollView>
-              {timeZoneOptions.map(option => (
-                <Button
-                  color="orange"
-                  title={option}
-                  key={option}
-                  onPress={() => setSelectedTimeZone(option)}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        </Modal>
+              margin: 16,
+              width: '80%',
+              padding: 8,
+            }}
+            placeholder="Search"
+            value={inputText}
+            onChangeText={text => {
+              setInputText(text);
+              setTimezoneOptions(
+                availableTimeZones.filter(option =>
+                  option.toLowerCase().includes(text.toLowerCase()),
+                ),
+              );
+            }}
+          />
+          <ScrollView>
+            {timeZoneOptions.slice(0, 8).map(option => (
+              <Button
+                color="orange"
+                title={option}
+                key={option}
+                onPress={() => setSelectedTimeZone(option)}
+              />
+            ))}
+          </ScrollView>
+        </Sheet>
       </View>
     </View>
   );
