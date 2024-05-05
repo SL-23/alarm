@@ -3,14 +3,23 @@ const dayTimeColor = '#ff9500';
 
 const nightTimeColor = '#8e8e93';
 
-const TimeSpectrum = () => {
+interface TimeSpectrumProps {
+  currentTime: string;
+}
+
+const ColorIndex = ({color}: {color: string}) => (
+  <View
+    style={{width: 16, height: 16, backgroundColor: color, borderRadius: 16}}
+  />
+);
+
+const TimeSpectrum = ({currentTime}: TimeSpectrumProps) => {
   return (
     <ScrollView
       contentContainerStyle={{
         flexGrow: 1,
       }}
       style={{
-        backgroundColor: 'white',
         margin: 16,
         padding: 0,
         display: 'flex',
@@ -21,6 +30,12 @@ const TimeSpectrum = () => {
           <View
             key={index}
             style={{
+              width: 24,
+              height: 24,
+              borderRadius: 16,
+              margin: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
               backgroundColor:
                 index === 0
                   ? '#ff9500'
@@ -42,6 +57,12 @@ const TimeSpectrum = () => {
         <View
           key={index + 12}
           style={{
+            width: 24,
+            height: 24,
+            borderRadius: 16,
+            margin: 2,
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor:
               index === 0
                 ? 'transparent'

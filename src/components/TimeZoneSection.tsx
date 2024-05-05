@@ -26,6 +26,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
     hour: '2-digit',
     minute: '2-digit',
     timeZoneName: 'longOffset',
+    hour12: false,
   } as Intl.DateTimeFormatOptions;
   const formatter = new Intl.DateTimeFormat([], options);
 
@@ -42,6 +43,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const [showDelete, setShowDelete] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const {removeMyTimeZone} = useContext(MyTimeZonesContext);
+  // console.log({formattedTimeArr});
   return (
     <>
       <View
@@ -93,10 +95,11 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
         <Sheet
           open={isSheetOpen}
           heading={`Add alarm at ${timeZone}`}
-          height={600}
+          height={800}
           onClose={() => setIsSheetOpen(false)}
           onSave={() => setIsSheetOpen(false)}>
           <AddAlarmSheetContent
+            locationTime={formattedTimeArr[0]}
             timeZone={timeZone}
             onSheetClose={() => setIsSheetOpen(false)}
           />

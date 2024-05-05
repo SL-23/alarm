@@ -44,7 +44,7 @@ const AddTimeZone = () => {
           onClose={() => setSheetOpen(false)}
           onSave={() => {
             setSheetOpen(false);
-            addMyTimeZone(selectedTimeZone);
+            if (selectedTimeZone) addMyTimeZone(selectedTimeZone);
           }}
           heading="Add a timezone">
           <Text style={{color: 'white', margin: 16}}>
