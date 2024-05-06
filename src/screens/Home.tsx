@@ -10,13 +10,13 @@ const Home = () => {
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       style={{
-        backgroundColor: 'black',
+        backgroundColor: 'white',
         height: '100%',
       }}>
       <AddTimeZone />
       <View
         style={{
-          backgroundColor: 'black',
+          backgroundColor: 'white',
         }}>
         <TimeZoneSection title="Local" timeZone="Australia/Adelaide" />
         {myTimeZones.map(zone => (
