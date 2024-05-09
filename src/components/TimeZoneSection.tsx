@@ -12,34 +12,8 @@ import Stack from './core/Stack';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
 import Sheet from './core/Sheet';
 import Inline from './core/Inline';
-
-const backgroundColorArr = [
-  '#F8F9F9',
-  '#F7F8F8',
-  '#F6F7F7',
-  '#F5F6F6',
-  '#F4F5F5',
-  '#F3F4F4',
-  '#F2F3F3',
-  '#F1F2F2',
-  '#F0F1F1',
-  '#EFEFEF',
-  '#E0E0E0',
-  '#D1D1D1',
-  '#C2C2C2',
-  '#B3B3B3',
-  '#A4A4A4',
-  '#959595',
-  '#868686',
-  '#777777',
-  '#727171',
-  '#656565',
-  '#5A5959',
-  '#4F4F4F',
-  '#454545',
-  '#3E3E3E',
-  '#3A3939',
-];
+import {colorHelper} from './core/theme';
+import Typography from './core/Typography';
 
 interface SectionProps {
   title: string;
@@ -72,9 +46,14 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const [showDelete, setShowDelete] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const {removeMyTimeZone} = useContext(MyTimeZonesContext);
-  console.log();
+
   const currentHour = formattedTimeArr[0].split(':')[0];
-  const backgroundColor = backgroundColorArr[parseInt(currentHour)];
+  const backgroundColor = colorHelper(
+    parseInt(currentHour) < 6 || parseInt(currentHour) > 18 ? 'black' : 'white',
+  );
+  const textColor = colorHelper(
+    parseInt(currentHour) < 6 || parseInt(currentHour) > 18 ? 'white' : 'black',
+  );
   return (
     <>
       <View
@@ -94,11 +73,17 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
         }}
         style={{...styles.sectionContainer, backgroundColor: backgroundColor}}>
         <Stack style={styles.titleContainer}>
-          <Text style={styles.sectionTitle}>{title}</Text>
-          <Text style={styles.sectionSubtitle}>{timeZoneName}</Text>
+          <Typography variant="subtitle" color={textColor}>
+            {title.replace('_', ' ')}
+          </Typography>
+          <Typography variant="body" color={textColor}>
+            {timeZoneName}
+          </Typography>
         </Stack>
         <Inline style={{gap: 16}}>
-          <Text style={styles.sectionDescription}>{formattedTimeArr[0]}</Text>
+          <Typography variant="h1" color={textColor}>
+            {formattedTimeArr[0]}
+          </Typography>
           <TouchableOpacity
             style={{
               width: 36,
@@ -155,20 +140,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: 'white',
-  },
-  sectionSubtitle: {
-    fontSize: 12,
-    color: 'white',
-  },
-  sectionDescription: {
-    color: 'white',
-    fontSize: 48,
-    fontWeight: '400',
   },
 });
 
