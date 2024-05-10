@@ -1,5 +1,6 @@
 import {useContext, useState} from 'react';
 import {
+  Alert,
   Button,
   ScrollView,
   Text,
@@ -16,7 +17,7 @@ const AddTimeZone = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [timeZoneOptions, setTimezoneOptions] = useState(availableTimeZones);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
-  const {addMyTimeZone} = useContext(MyTimeZonesContext);
+  const {myTimeZones, addMyTimeZone} = useContext(MyTimeZonesContext);
   return (
     <View>
       <TouchableOpacity
@@ -44,7 +45,6 @@ const AddTimeZone = () => {
           onClose={() => setSheetOpen(false)}
           onSave={() => {
             setSheetOpen(false);
-            if (selectedTimeZone) addMyTimeZone(selectedTimeZone);
           }}
           heading="Add a timezone">
           <Text style={{color: 'white', margin: 16}}>
@@ -79,7 +79,15 @@ const AddTimeZone = () => {
                 color="orange"
                 title={option}
                 key={option}
-                onPress={() => setSelectedTimeZone(option)}
+                onPress={() => {
+                  if (myTimeZones.find(zone => zone === option)) {
+                    Alert.alert('Timezone exists', 'Select another one');
+                  } else {
+                    setSelectedTimeZone(option);
+                    addMyTimeZone(option);
+                    setSheetOpen(false);
+                  }
+                }}
               />
             ))}
           </ScrollView>

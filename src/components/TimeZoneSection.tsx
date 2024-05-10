@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 16,
     borderRadius: 16,
+    opacity: 0.9,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
