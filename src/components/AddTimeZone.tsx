@@ -11,6 +11,7 @@ import {
 import {availableTimeZones} from './availableTimeZones';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
 import Sheet from './core/Sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddTimeZone = () => {
   const [inputText, setInputText] = useState('');
@@ -18,8 +19,20 @@ const AddTimeZone = () => {
   const [timeZoneOptions, setTimezoneOptions] = useState(availableTimeZones);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
   const {myTimeZones, addMyTimeZone} = useContext(MyTimeZonesContext);
+  const [data, setData] = useState('old');
+
+  const storeData = async (value: string) => {
+    try {
+      await AsyncStorage.setItem(value, value);
+    } catch (e) {
+      Alert.alert('Error saving timezone', '');
+    }
+  };
+
   return (
     <View>
+      {/* <Button title="get key" onPress={getData} />
+      <Text>{data}</Text> */}
       <TouchableOpacity
         style={{
           justifyContent: 'center',
@@ -86,6 +99,7 @@ const AddTimeZone = () => {
                     setSelectedTimeZone(option);
                     addMyTimeZone(option);
                     setSheetOpen(false);
+                    storeData(option);
                   }
                 }}
               />

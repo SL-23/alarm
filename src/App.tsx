@@ -24,6 +24,9 @@ function App(): React.JSX.Element {
             removeMyTimeZone: timeZone => {
               setMyTimeZones(myTimeZones.filter(t => t !== timeZone));
             },
+            setSavedTimeZones(timeZones) {
+              setMyTimeZones(timeZones);
+            },
           }}>
           <Home />
         </MyTimeZonesContext.Provider>
