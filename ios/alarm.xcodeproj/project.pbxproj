@@ -50,6 +50,7 @@
 		E66267605BAFD91BBA8ED17A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-alarm-alarmTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FB5889062BDE1046004C53AE /* alarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = alarm.entitlements; path = alarm/alarm.entitlements; sourceTree = "<group>"; };
+		FBB8F9B62BF50154001E9DB8 /* alarmRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = alarmRelease.entitlements; path = alarm/alarmRelease.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +93,7 @@
 		13B07FAE1A68108700A75B9A /* alarm */ = {
 			isa = PBXGroup;
 			children = (
+				FBB8F9B62BF50154001E9DB8 /* alarmRelease.entitlements */,
 				FB5889062BDE1046004C53AE /* alarm.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -575,7 +577,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = alarm/alarm.entitlements;
+				CODE_SIGN_ENTITLEMENTS = alarm/alarmRelease.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KZRZ5HNRP2;
 				INFOPLIST_FILE = alarm/Info.plist;
@@ -672,10 +674,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -747,10 +746,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
