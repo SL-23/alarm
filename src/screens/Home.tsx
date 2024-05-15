@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {Button, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import TimeZoneSection from '../components/TimeZoneSection';
 import AddTimeZone from '../components/AddTimeZone';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
@@ -27,9 +27,8 @@ const Home = () => {
 
   const getData = async () => {
     try {
-      await AsyncStorage.removeItem('my-key');
-      const allSavedTimezones = await AsyncStorage.getAllKeys();
-      setSavedTimeZones(allSavedTimezones as string[]);
+      const allSavedTimeZones = await AsyncStorage.getAllKeys();
+      setSavedTimeZones(allSavedTimeZones as string[]);
     } catch (e) {
       // error reading value
     }

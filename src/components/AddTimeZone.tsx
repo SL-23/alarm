@@ -16,23 +16,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AddTimeZone = () => {
   const [inputText, setInputText] = useState('');
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [timeZoneOptions, setTimezoneOptions] = useState(availableTimeZones);
+  const [timeZoneOptions, setTimeZoneOptions] = useState(availableTimeZones);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
-  const {myTimeZones, addMyTimeZone} = useContext(MyTimeZonesContext);
-  const [data, setData] = useState('old');
+  const {myTimeZones} = useContext(MyTimeZonesContext);
 
   const storeData = async (value: string) => {
     try {
       await AsyncStorage.setItem(value, value);
     } catch (e) {
-      Alert.alert('Error saving timezone', '');
+      Alert.alert('Error saving timeZone', '');
     }
   };
 
   return (
     <View>
-      {/* <Button title="get key" onPress={getData} />
-      <Text>{data}</Text> */}
       <TouchableOpacity
         style={{
           justifyContent: 'center',
@@ -59,7 +56,7 @@ const AddTimeZone = () => {
           onSave={() => {
             setSheetOpen(false);
           }}
-          heading="Add a timezone">
+          heading="Add a timeZone">
           <Text style={{color: 'white', margin: 16}}>
             Selected {selectedTimeZone}
           </Text>
@@ -79,7 +76,7 @@ const AddTimeZone = () => {
             value={inputText}
             onChangeText={text => {
               setInputText(text);
-              setTimezoneOptions(
+              setTimeZoneOptions(
                 availableTimeZones.filter(option =>
                   option.toLowerCase().includes(text.toLowerCase()),
                 ),
@@ -94,10 +91,9 @@ const AddTimeZone = () => {
                 key={option}
                 onPress={() => {
                   if (myTimeZones.find(zone => zone === option)) {
-                    Alert.alert('Timezone exists', 'Select another one');
+                    Alert.alert('TimeZone exists', 'Select another one');
                   } else {
                     setSelectedTimeZone(option);
-                    addMyTimeZone(option);
                     setSheetOpen(false);
                     storeData(option);
                   }

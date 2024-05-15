@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import AddAlarmSheetContent from './AddAlarmSheetContent';
 import Stack from './core/Stack';
-import MyTimeZonesContext from '../context/MyTimeZonesContext';
 import Sheet from './core/Sheet';
 import Inline from './core/Inline';
 import {colorHelper} from './core/theme';
 import Typography from './core/Typography';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SectionProps {
   title: string;
@@ -45,7 +45,6 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const [touchStartPos, setTouchStartPos] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const {removeMyTimeZone} = useContext(MyTimeZonesContext);
 
   const currentHour = formattedTimeArr[0].split(':')[0];
   const backgroundColor = colorHelper(
@@ -54,6 +53,14 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const textColor = colorHelper(
     parseInt(currentHour) < 6 || parseInt(currentHour) > 18 ? 'white' : 'black',
   );
+
+  const removeData = async (value: string) => {
+    try {
+      await AsyncStorage.removeItem(value);
+    } catch (e) {
+      // saving error
+    }
+  };
   return (
     <>
       <View
@@ -106,7 +113,12 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
         </Inline>
 
         {showDelete && title !== 'Local' && (
-          <Button title="DEL" onPress={() => removeMyTimeZone(timeZone)} />
+          <Button
+            title="DEL"
+            onPress={() => {
+              removeData(timeZone);
+            }}
+          />
         )}
       </View>
       <View>
