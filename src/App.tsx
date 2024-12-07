@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {SafeAreaView, StatusBar} from 'react-native';
 import Home from './screens/Home';
 import MyTimeZonesContext from './context/MyTimeZonesContext';
+import Worldtime from './components/Worldtime';
 
 function App(): React.JSX.Element {
   const backgroundStyle = {
@@ -30,6 +31,7 @@ function App(): React.JSX.Element {
           }}>
           <Home />
         </MyTimeZonesContext.Provider>
+        {/* <Worldtime /> */}
       </SafeAreaView>
     </>
   );

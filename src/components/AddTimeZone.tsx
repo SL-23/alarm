@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {
   Alert,
   Button,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {availableTimeZones} from './availableTimeZones';
+import {cityTimezoneMap} from './staticCityTimezoneMap';
 import MyTimeZonesContext from '../context/MyTimeZonesContext';
 import Sheet from './core/Sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AddTimeZone = () => {
   const [inputText, setInputText] = useState('');
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [timeZoneOptions, setTimeZoneOptions] = useState(availableTimeZones);
+  const cities = Object.keys(cityTimezoneMap);
+  const [cityOptions, setCityOptions] = useState<string[]>(cities);
   const [selectedTimeZone, setSelectedTimeZone] = useState('');
   const {myTimeZones} = useContext(MyTimeZonesContext);
 
@@ -76,15 +77,18 @@ const AddTimeZone = () => {
             value={inputText}
             onChangeText={text => {
               setInputText(text);
-              setTimeZoneOptions(
-                availableTimeZones.filter(option =>
+              if (text === '') {
+                setCityOptions(cities);
+              } else {
+                const filtered = cities.filter(option =>
                   option.toLowerCase().includes(text.toLowerCase()),
-                ),
-              );
+                );
+                setCityOptions(filtered);
+              }
             }}
           />
           <ScrollView>
-            {timeZoneOptions.slice(0, 8).map(option => (
+            {cityOptions.slice(0, 8).map(option => (
               <Button
                 color="orange"
                 title={option}
@@ -93,9 +97,13 @@ const AddTimeZone = () => {
                   if (myTimeZones.find(zone => zone === option)) {
                     Alert.alert('TimeZone exists', 'Select another one');
                   } else {
-                    setSelectedTimeZone(option);
+                    setSelectedTimeZone(
+                      cityTimezoneMap[option as keyof typeof cityTimezoneMap],
+                    );
                     setSheetOpen(false);
-                    storeData(option);
+                    storeData(
+                      cityTimezoneMap[option as keyof typeof cityTimezoneMap],
+                    );
                   }
                 }}
               />

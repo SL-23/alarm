@@ -25,7 +25,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   const [locationTime, setLocationTime] = useState(dateInformation);
 
   const options = {
-    timeZone: timeZone,
+    timeZone: 'Australia/Adelaide',
     hour: '2-digit',
     minute: '2-digit',
     timeZoneName: 'longOffset',
