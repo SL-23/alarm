@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import {
   Alert,
   Button,
@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {cityTimezoneMap} from './staticCityTimezoneMap';
-import MyTimeZonesContext from '../context/MyTimeZonesContext';
+import MyCitiesContext, {AvailableCity} from '../context/MyCitiesContext';
 import Sheet from './core/Sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,12 +18,12 @@ const AddTimeZone = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const cities = Object.keys(cityTimezoneMap);
   const [cityOptions, setCityOptions] = useState<string[]>(cities);
-  const [selectedTimeZone, setSelectedTimeZone] = useState('');
-  const {myTimeZones} = useContext(MyTimeZonesContext);
+  const [selectedCity, setSelectedCity] = useState('');
+  const {myCities} = useContext(MyCitiesContext);
 
-  const storeData = async (value: string) => {
+  const storeData = async (value: {city: string; timezone: string}) => {
     try {
-      await AsyncStorage.setItem(value, value);
+      await AsyncStorage.setItem(value.city, value.timezone);
     } catch (e) {
       Alert.alert('Error saving timeZone', '');
     }
@@ -59,7 +59,7 @@ const AddTimeZone = () => {
           }}
           heading="Add a timeZone">
           <Text style={{color: 'white', margin: 16}}>
-            Selected {selectedTimeZone}
+            Selected {selectedCity}
           </Text>
 
           <TextInput
@@ -88,22 +88,22 @@ const AddTimeZone = () => {
             }}
           />
           <ScrollView>
-            {cityOptions.slice(0, 8).map(option => (
+            {cityOptions.slice(0, 8).map(city => (
               <Button
                 color="orange"
-                title={option}
-                key={option}
+                title={city}
+                key={city}
                 onPress={() => {
-                  if (myTimeZones.find(zone => zone === option)) {
+                  if (Object.keys(myCities).includes(city)) {
                     Alert.alert('TimeZone exists', 'Select another one');
                   } else {
-                    setSelectedTimeZone(
-                      cityTimezoneMap[option as keyof typeof cityTimezoneMap],
-                    );
+                    setSelectedCity(city);
+                    console.log({city}, cityTimezoneMap[city as AvailableCity]);
                     setSheetOpen(false);
-                    storeData(
-                      cityTimezoneMap[option as keyof typeof cityTimezoneMap],
-                    );
+                    storeData({
+                      city,
+                      timezone: cityTimezoneMap[city as AvailableCity],
+                    });
                   }
                 }}
               />

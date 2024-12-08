@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {Alert, Button, ScrollView, View} from 'react-native';
 import TimeZoneSection from '../components/TimeZoneSection';
 import AddTimeZone from '../components/AddTimeZone';
-import MyTimeZonesContext from '../context/MyTimeZonesContext';
+import MyTimeZonesContext, {AvailableCity} from '../context/MyCitiesContext';
 import LocalTime from '../components/LocalTime';
 import {getBackgroundColor} from '../helpers/helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,7 +38,7 @@ const registerNotification = async () => {
 };
 
 const Home = () => {
-  const {myTimeZones, setSavedTimeZones} = useContext(MyTimeZonesContext);
+  const {myCities, setAllCities} = useContext(MyTimeZonesContext);
   const dateInformation = new Date();
 
   const options = {
@@ -58,7 +58,7 @@ const Home = () => {
   const getData = async () => {
     try {
       const allSavedTimeZones = await AsyncStorage.getAllKeys();
-      setSavedTimeZones(allSavedTimeZones as string[]);
+      setAllCities(allSavedTimeZones as AvailableCity[]);
     } catch (e) {
       // error reading value
     }
@@ -66,7 +66,7 @@ const Home = () => {
 
   useEffect(() => {
     getData();
-  }, [myTimeZones]);
+  }, [myCities]);
 
   useEffect(() => {
     registerNotification();
@@ -105,12 +105,8 @@ const Home = () => {
       <AddTimeZone />
       <LocalTime timeZone={timeZone} currentTime={currentTime} />
       <View>
-        {myTimeZones.map(zone => (
-          <TimeZoneSection
-            key={zone}
-            title={zone.split('/')[1]}
-            timeZone={zone}
-          />
+        {myCities.map((city: AvailableCity) => (
+          <TimeZoneSection key={city} city={city} title={city} />
         ))}
       </View>
     </ScrollView>

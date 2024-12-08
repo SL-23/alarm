@@ -23,11 +23,11 @@ Notifications.setNotificationHandler({
 });
 
 interface InputFieldsProps {
-  timeZone: string;
+  city: string;
   onSheetClose: () => void;
 }
 
-const InputFields = ({timeZone, onSheetClose}: InputFieldsProps) => {
+const InputFields = ({city, onSheetClose}: InputFieldsProps) => {
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [amOrPm, setAmOrPm] = useState('');

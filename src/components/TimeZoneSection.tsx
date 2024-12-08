@@ -1,12 +1,5 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {
-  Button,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Button, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import AddAlarmSheetContent from './AddAlarmSheetContent';
 import Stack from './core/Stack';
 import Sheet from './core/Sheet';
@@ -14,18 +7,20 @@ import Inline from './core/Inline';
 import {colorHelper} from './core/theme';
 import Typography from './core/Typography';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {cityTimezoneMap} from './staticCityTimezoneMap';
+import {AvailableCity} from '../context/MyCitiesContext';
 
 interface SectionProps {
   title: string;
-  timeZone: string;
+  city: AvailableCity;
 }
 
-const TimeZoneSection = ({title, timeZone}: SectionProps) => {
+const TimeZoneSection = ({title, city}: SectionProps) => {
   const dateInformation = new Date();
   const [locationTime, setLocationTime] = useState(dateInformation);
 
   const options = {
-    timeZone: 'Australia/Adelaide',
+    timeZone: cityTimezoneMap[city],
     hour: '2-digit',
     minute: '2-digit',
     timeZoneName: 'longOffset',
@@ -41,6 +36,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
   }, []);
 
   const formattedTimeArr = formatter.format(locationTime).split(' ');
+  console.log({city}, '>>>>', cityTimezoneMap[city], formattedTimeArr);
   const timeZoneName = formattedTimeArr.slice(1).join(' ');
   const [touchStartPos, setTouchStartPos] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
@@ -116,7 +112,7 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
           <Button
             title="DEL"
             onPress={() => {
-              removeData(timeZone);
+              removeData(city);
             }}
           />
         )}
@@ -124,13 +120,13 @@ const TimeZoneSection = ({title, timeZone}: SectionProps) => {
       <View>
         <Sheet
           open={isSheetOpen}
-          heading={`Add alarm at ${timeZone}`}
+          heading={`Add alarm at ${city}`}
           height={800}
           onClose={() => setIsSheetOpen(false)}
           onSave={() => setIsSheetOpen(false)}>
           <AddAlarmSheetContent
             locationTime={formattedTimeArr[0]}
-            timeZone={timeZone}
+            city={city}
             onSheetClose={() => setIsSheetOpen(false)}
           />
         </Sheet>

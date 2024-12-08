@@ -1,6 +1,6 @@
 export const cityTimezoneMap = {
   // north America
-  ' New York': 'America/New_York',
+  'New York': 'America/New_York',
   'Los Angeles': 'America/Los_Angeles',
   Chicago: 'America/Chicago',
   Houston: 'America/Chicago',

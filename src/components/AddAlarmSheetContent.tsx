@@ -3,13 +3,13 @@ import TimeSpectrum from './TimeSpectrum';
 import InputFields from './InputFields';
 
 interface AddAlarmSheetProps {
-  timeZone: string;
+  city: string;
   onSheetClose: () => void;
   locationTime: string;
 }
 
 const AddAlarmSheetContent = ({
-  timeZone,
+  city,
   onSheetClose,
   locationTime,
 }: AddAlarmSheetProps) => {
@@ -26,7 +26,7 @@ const AddAlarmSheetContent = ({
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <InputFields timeZone={timeZone} onSheetClose={onSheetClose} />
+      <InputFields city={city} onSheetClose={onSheetClose} />
       <View style={{display: 'flex', flexDirection: 'row'}}>
         <TimeSpectrum currentTime={formattedLocalTime} />
         <TimeSpectrum currentTime={locationTime} />
